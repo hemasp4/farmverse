@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles can only be read/written by the owner
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Crops can be read by anyone, but only written by the owner
+    match /crops/{cropId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+                    request.auth.uid == resource.data.userId;
+    }
+    
+    // Market prices are readable by all authenticated users
+    match /market/{itemId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Only admin can write (via Cloud Functions)
+    }
+  }
+}
+ 
