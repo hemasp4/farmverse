@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/Authcontext';
-import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
-  const { currentUser, userData, logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,10 +67,10 @@ export default function Navbar() {
             {currentUser ? (
               <div className="ml-3 relative">
                 <div className="flex items-center">
-                  {userData && (
+                  {currentUser && (
                     <div className="mr-4 hidden md:flex items-center">
                       <span className="text-yellow-500 mr-1">💰</span>
-                      <span className="font-medium">{userData.coins}</span>
+                      <span className="font-medium">{currentUser.coins}</span>
                     </div>
                   )}
                   
@@ -87,14 +86,14 @@ export default function Navbar() {
                 
                 {isMenuOpen && (
                   <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-10">
-                    {userData && (
+                    {currentUser && (
                       <div className="px-4 py-2 border-b">
-                        <p className="text-sm font-medium">Level {userData.level}</p>
+                        <p className="text-sm font-medium">Welcome, {currentUser.username}</p>
                         <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
                       </div>
                     )}
                     <div className="px-4 py-2">
-                      <LanguageSwitcher />
+                      {/* <LanguageSwitcher /> */}
                     </div>
                     
                     <button

@@ -18,7 +18,11 @@ export default function TransactionHistory({ onClose }) {
         setLoading(false);
       }
     }
-    fetchTransactions();
+    fetchTransactions(); // Initial fetch
+
+    const intervalId = setInterval(fetchTransactions, 5000); // Refresh every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
   const getTransactionDescription = (transaction) => {

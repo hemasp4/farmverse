@@ -28,15 +28,13 @@ export function GrowthProvider({ children }) {
     const interval = setInterval(() => {
       setLocalCrops(prevCrops => 
         prevCrops.map(crop => {
-          if (crop.isHarvestable) return crop;
-          
           const updatedProgress = calculateGrowthProgress(crop);
           
           // Determine if crop should transition to harvestable based on local calculation
           let updatedCrop = { ...crop, growthProgress: updatedProgress };
+          updatedCrop.isHarvestable = updatedProgress >= 1;
           
-          if (updatedProgress >= 1 && !crop.isHarvestable) {
-            updatedCrop.isHarvestable = true;
+          if (updatedProgress >= 1) {
             updatedCrop.stage = 'ready';
           } else if (updatedProgress >= 0.66 && crop.stage !== 'mature' && crop.stage !== 'ready') {
             updatedCrop.stage = 'mature';
