@@ -10,91 +10,15 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { useGame } from '../../contexts/GameContext';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
-import { db } from '../../services/firebase';
 import LoadingSpinner from '../common/LoadingSpinner';
 
 export default function MarketPriceChart() {
   const { cropCatalog, marketPrices } = useGame();
   const [historicalPrices, setHistoricalPrices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('week');
   const [selectedCrops, setSelectedCrops] = useState(Object.keys(cropCatalog));
 
-  useEffect(() => {
-    async function fetchHistoricalPrices() {
-      try {
-        setLoading(true);
-        
-        // Determine limit based on timeframe
-        let dayLimit = 7;
-        if (selectedTimeframe === 'month') dayLimit = 30;
-        if (selectedTimeframe === 'day') dayLimit = 1;
-        
-        // Get price history from 'marketHistory' collection
-        const q = query(
-          collection(db, 'marketHistory'),
-          orderBy('timestamp', 'desc'),
-          limit(dayLimit)
-        );
-        
-        const querySnapshot = await getDocs(q);
-        const priceHistory = [];
-        
-        querySnapshot.forEach(doc => {
-          const data = doc.data();
-          priceHistory.push({
-            date: data.timestamp.toDate().toLocaleDateString(),
-            ...data.prices
-          });
-        });
-        
-        // Reverse to show oldest to newest
-        setHistoricalPrices(priceHistory.reverse());
-      } catch (error) {
-        console.error("Error fetching price history:", error);
-        // Use mock data if fetch fails
-        setHistoricalPrices(generateMockData());
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    fetchHistoricalPrices();
-  }, [selectedTimeframe]);
-
-  const generateMockData = () => {
-    // Generate fake historical data if the real data isn't available yet
-    const mockData = [];
-    const today = new Date();
-    
-    // Determine number of days based on timeframe
-    let days = 7;
-    if (selectedTimeframe === 'month') days = 30;
-    if (selectedTimeframe === 'day') days = 1;
-    
-    for (let i = days; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      
-      const dataPoint = {
-        date: date.toLocaleDateString()
-      };
-      
-      // Add price for each crop type
-      Object.keys(cropCatalog).forEach(type => {
-        const baseValue = cropCatalog[type].baseValue;
-        const fluctuation = cropCatalog[type].fluctuation || 0.3;
-        const randomFactor = 1 + (Math.random() * 2 * fluctuation - fluctuation);
-        dataPoint[type] = Math.round(baseValue * randomFactor);
-      });
-      
-      mockData.push(dataPoint);
-    }
-    
-    return mockData;
-  };
-  
   const toggleCropSelection = (cropType) => {
     setSelectedCrops(prev => {
       if (prev.includes(cropType)) {

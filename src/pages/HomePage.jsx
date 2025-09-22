@@ -22,7 +22,7 @@ export default function HomePage() {
               </p>
               <div className="mt-8 flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                 {currentUser ? (
-                  <Link to="/dashboard" className="btn-primary text-center px-8 py-3 text-lg">
+                  <Link to="/farm" className="btn-primary text-center px-8 py-3 text-lg">
                     Go to My Farm
                   </Link>
                 ) : (
@@ -158,7 +158,7 @@ export default function HomePage() {
             Join thousands of virtual farmers today and grow your sustainable farm empire.
           </p>
                     {currentUser ? (
-            <Link to="/dashboard" className="bg-white text-farm-green hover:bg-green-50 px-8 py-3 rounded-lg text-lg font-medium inline-block">
+            <Link to="/farm" className="bg-white text-farm-green hover:bg-green-50 px-8 py-3 rounded-lg text-lg font-medium inline-block">
               Go to My Farm
             </Link>
           ) : (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/Authcontext';
+import { registerUser } from '../../services/authService';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -9,7 +9,6 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signup } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -30,8 +29,8 @@ export default function Register() {
     try {
       setError('');
       setLoading(true);
-      await signup(email, password, username);
-      navigate('/profile-setup');
+      await registerUser(email, password, username);
+      navigate('/login');
     } catch (error) {
       setError('Failed to create an account. ' + error.message);
       console.error(error);

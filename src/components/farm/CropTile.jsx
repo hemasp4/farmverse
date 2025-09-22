@@ -22,25 +22,34 @@ export default function CropTile({ cropData, position, onClick }) {
   const progress = cropData.growthProgress || 0;
   
   const getCropStageDisplay = () => {
-    switch (stage) {
-      case 'seedling':
-        return '🌱';
-      case 'growing':
-        return '🌿';
-      case 'mature':
-        return cropInfo.icon;
-      case 'ready':
-        return (
-          <div className="relative animate-pulse">
-            {cropInfo.icon}
-            <span className="absolute -top-2 -right-2 text-xs bg-yellow-400 text-white rounded-full w-4 h-4 flex items-center justify-center">
-              ✓
-            </span>
-          </div>
-        );
-      default:
-        return '🌱';
+    let animationClass = '';
+    if (stage === 'seedling') {
+      animationClass = 'animate-grow';
     }
+
+    const icon = (() => {
+      switch (stage) {
+        case 'seedling':
+          return '🌱';
+        case 'growing':
+          return '🌿';
+        case 'mature':
+          return cropInfo.icon;
+        case 'ready':
+          return (
+            <div className="relative animate-wobble">
+              {cropInfo.icon}
+              <span className="absolute -top-2 -right-2 text-xs bg-yellow-400 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                ✓
+              </span>
+            </div>
+          );
+        default:
+          return '🌱';
+      }
+    })();
+
+    return <div className={animationClass}>{icon}</div>;
   };
   
   const handleHarvest = (e) => {

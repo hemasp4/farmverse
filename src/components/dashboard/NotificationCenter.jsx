@@ -1,8 +1,8 @@
 import React from 'react';
-import { useGame } from '../../contexts/GameContext';
+import { useNotification } from '../../contexts/NotificationContext';
 
 export default function NotificationCenter() {
-  const { notifications, markNotificationAsRead } = useGame();
+  const { notifications, markAsRead } = useNotification();
   
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -20,7 +20,7 @@ export default function NotificationCenter() {
   };
   
   const handleMarkAsRead = (notificationId) => {
-    markNotificationAsRead(notificationId);
+    markAsRead(notificationId);
   };
   
   return (
@@ -38,7 +38,7 @@ export default function NotificationCenter() {
         {notifications.length > 0 ? (
           notifications.map((notification) => (
             <div 
-              key={notification.id}
+              key={notification._id}
               className="p-3 bg-green-50 rounded-lg border border-green-100"
             >
               <div className="flex">
@@ -50,10 +50,10 @@ export default function NotificationCenter() {
                   <p className="text-sm text-gray-600">{notification.message}</p>
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-xs text-gray-500">
-                      {notification.createdAt.toDate().toLocaleString()}
+                      {new Date(notification.createdAt).toLocaleString()}
                     </span>
                     <button 
-                      onClick={() => handleMarkAsRead(notification.id)}
+                      onClick={() => handleMarkAsRead(notification._id)}
                       className="text-xs text-farm-green hover:underline"
                     >
                       Mark as read

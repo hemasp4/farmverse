@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../../contexts/Authcontext';
 import { useGame } from '../../contexts/GameContext';
 import ProgressBar from '../common/ProgressBar';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export default function FarmStats() {
   const { userData } = useAuth();

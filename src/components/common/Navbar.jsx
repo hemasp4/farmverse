@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/Authcontext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const { currentUser, userData, logout } = useAuth();
@@ -22,6 +23,7 @@ export default function Navbar() {
     { name: 'Farm', path: '/farm', icon: '🌱' },
     { name: 'Market', path: '/market', icon: '🛒' },
     { name: 'Leaderboard', path: '/leaderboard', icon: '🏆' },
+    { name: 'News', path: '/news', icon: '📰' },
   ];
   
   const isActive = (path) => {
@@ -91,6 +93,9 @@ export default function Navbar() {
                         <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
                       </div>
                     )}
+                    <div className="px-4 py-2">
+                      <LanguageSwitcher />
+                    </div>
                     
                     <button
                       onClick={handleLogout}

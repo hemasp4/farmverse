@@ -56,8 +56,8 @@ export function GrowthProvider({ children }) {
   const calculateGrowthProgress = (crop) => {
     if (!crop.plantedAt || !crop.harvestTime) return 0;
     
-    const plantedTime = crop.plantedAt.toDate().getTime();
-    const harvestTime = crop.harvestTime.toDate().getTime();
+    const plantedTime = new Date(crop.plantedAt).getTime();
+    const harvestTime = new Date(crop.harvestTime).getTime();
     const currentTime = Date.now();
     
     return Math.min(Math.max((currentTime - plantedTime) / (harvestTime - plantedTime), 0), 1);
@@ -68,7 +68,7 @@ export function GrowthProvider({ children }) {
     if (crop.isHarvestable) return 'Ready to harvest!';
 
     try{
-    const harvestTime = crop.harvestTime.toDate().getTime();
+    const harvestTime = new Date(crop.harvestTime).getTime();
     const currentTime = Date.now();
     const remainingMs = harvestTime - currentTime;
     

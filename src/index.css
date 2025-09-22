@@ -16,3 +16,22 @@ body {
     @apply bg-white p-6 rounded-xl shadow-md;
   }
 }
+
+@keyframes grow {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
+
+.animate-grow {
+  animation: grow 0.5s ease-out;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+.animate-wobble {
+  animation: wobble 0.5s ease-in-out infinite;
+}

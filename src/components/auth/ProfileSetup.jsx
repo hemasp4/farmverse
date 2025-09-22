@@ -15,6 +15,7 @@ const FARM_STYLES = [
 export default function ProfileSetup() {
   const [selectedStyle, setSelectedStyle] = useState('');
   const [farmName, setFarmName] = useState('');
+  const [panchayat, setPanchayat] = useState('');
   const [avatar, setAvatar] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -42,6 +43,10 @@ export default function ProfileSetup() {
     if (!farmName.trim()) {
       return setError('Please enter a farm name');
     }
+
+    if (!panchayat.trim()) {
+      return setError('Please enter your panchayat');
+    }
     
     if (!selectedStyle) {
       return setError('Please select a farm style');
@@ -54,6 +59,7 @@ export default function ProfileSetup() {
       const userRef = doc(db, 'users', currentUser.uid);
       await updateDoc(userRef, {
         farmName: farmName,
+        panchayat: panchayat,
         farmStyle: selectedStyle,
         avatarId: avatar,
         profileSetupComplete: true
@@ -104,6 +110,23 @@ export default function ProfileSetup() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-farm-green"
               placeholder="Green Acres"
               maxLength={20}
+              required
+            />
+          </div>
+
+          {/* Panchayat */}
+          <div>
+            <label className="block text-gray-700 mb-2" htmlFor="panchayat">
+              Panchayat
+            </label>
+            <input
+              id="panchayat"
+              type="text"
+              value={panchayat}
+              onChange={(e) => setPanchayat(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-farm-green"
+              placeholder="Your Panchayat"
+              maxLength={50}
               required
             />
           </div>

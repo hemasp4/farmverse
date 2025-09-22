@@ -11,7 +11,7 @@ export default function FarmGrid() {
   const { crops, plantCrop, cropCatalog, loading: gameLoading } = useGame();
   const growth = useGrowth();
   const localCrops = growth?.localCrops || [];
-  const { userData } = useAuth();
+  const { currentUser } = useAuth();
   
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [showPlantModal, setShowPlantModal] = useState(false);
@@ -19,7 +19,7 @@ export default function FarmGrid() {
   const [selectedCropForDetails, setSelectedCropForDetails] = useState(null);
 
   // Calculate grid size based on user's land
-  const gridSize = userData ? Math.sqrt(userData.land) : 2;
+  const gridSize = currentUser ? Math.sqrt(currentUser.user.land) : 2;
   
   // Create a 2D array representing the farm grid
   const createGrid = () => {
@@ -59,7 +59,7 @@ export default function FarmGrid() {
     if (!cropType || !selectedPosition) return;
     
     // Check if user has enough coins
-    if (userData.coins < cropCatalog[cropType].cost) {
+    if (currentUser.user.coins < cropCatalog[cropType].cost) {
       alert("Not enough coins to plant this crop!");
       return;
     }
