@@ -107,6 +107,17 @@ router.post('/harvest', auth, async (req, res) => {
     user.experience += 10;
     await user.save();
 
+    const newTransaction = new Transaction({
+      user: req.user.id,
+      cropType: crop.type,
+      quantity: 1,
+      pricePerUnit: marketPrice,
+      totalEarnings: marketPrice,
+      type: 'harvest',
+      source: 'Farm',
+    });
+    await newTransaction.save();
+
     await Crop.findByIdAndDelete(cropId);
 
     res.json({ msg: 'Crop harvested successfully', user });

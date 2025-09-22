@@ -5,6 +5,7 @@ import FarmStats from './FarmStats';
 import NotificationCenter from './NotificationCenter';
 import TransactionHistory from './TransactionHistory';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -27,11 +28,18 @@ export default function Dashboard() {
       }
     });
     
-    return Object.entries(distribution).map(([type, count]) => ({
-      name: cropCatalog[type].name,
-      value: count,
-      color: getCropColor(type)
-    }));
+    return Object.entries(distribution)
+      .map(([type, count]) => {
+        if (cropCatalog[type]) {
+          return {
+            name: cropCatalog[type].name,
+            value: count,
+            color: getCropColor(type)
+          };
+        }
+        return null;
+      })
+      .filter(Boolean); // remove null entries
   };
   
   const getCropColor = (type) => {
@@ -111,9 +119,14 @@ export default function Dashboard() {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">
-                No crops planted yet. Visit your farm to start planting!
-              </p>
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-4">
+                  No crops planted yet. Visit your farm to start planting!
+                </p>
+                <Link to="/farm" className="btn-primary">
+                  Go to Farm
+                </Link>
+              </div>
             )}
           </div>
         </div>
