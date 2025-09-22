@@ -84,7 +84,7 @@ router.post('/harvest', auth, async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    if (!crop.isHarvestable) {
+    if (new Date() < crop.harvestTime) {
       return res.status(400).json({ msg: 'Crop not ready for harvest' });
     }
 

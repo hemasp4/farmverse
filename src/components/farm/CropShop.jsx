@@ -13,7 +13,7 @@ export default function CropShop({ onClose, onPlant, position }) {
     onClose();
   };
   
-  const coins = currentUser?.user?.coins || 500;
+  const coins = currentUser?.coins || 500;
   
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -44,7 +44,7 @@ export default function CropShop({ onClose, onPlant, position }) {
         
         <div className="grid grid-cols-1 gap-3 mb-6 sm:grid-cols-2">
           {Object.entries(cropCatalog).map(([type, data]) => {
-            const canAfford = currentUser && currentUser.user.coins >= data.cost;
+            const canAfford = currentUser && currentUser.coins >= data.cost;
             
             return (
               <div 

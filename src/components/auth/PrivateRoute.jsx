@@ -5,6 +5,7 @@ import LoadingSpinner from '../common/LoadingSpinner';
 
 export default function PrivateRoute({ children }) {
   const { currentUser, loading } = useAuth();
+  const token = localStorage.getItem('token');
 
   if (loading) {
     return (
@@ -14,5 +15,5 @@ export default function PrivateRoute({ children }) {
     );
   }
 
-  return currentUser ? children : <Navigate to="/login" />;
+  return currentUser || token ? children : <Navigate to="/login" />;
 }

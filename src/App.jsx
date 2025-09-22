@@ -4,6 +4,9 @@ import { AuthProvider } from './contexts/Authcontext';
 import PrivateRoute from './components/auth/PrivateRoute';
 import NetworkStatus from './components/common/NetworkStatus';
 import LoadingSpinner from './components/common/LoadingSpinner';
+import { NotificationProvider } from './contexts/NotificationContext';
+import { GameProvider } from './contexts/GameContext';
+import { GrowthProvider } from './contexts/GrowthContext';
 
 // Pages (lazy-loaded)
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -70,11 +73,6 @@ function AppContent() {
     </>
   );
 }
-
-import { NotificationProvider } from './contexts/NotificationContext';
-
-import { GameProvider } from './contexts/GameContext';
-import { GrowthProvider } from './contexts/GrowthContext';
 
 function App() {
   return (

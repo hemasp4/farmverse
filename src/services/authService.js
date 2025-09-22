@@ -38,7 +38,7 @@ export const logoutUser = () => {
 // Get current user
 export const getCurrentUser = () => {
   const user = localStorage.getItem('user');
-  if (user) {
+  if (user && user !== 'undefined') {
     return JSON.parse(user);
   }
   return null;

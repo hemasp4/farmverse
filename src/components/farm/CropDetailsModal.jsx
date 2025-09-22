@@ -1,12 +1,21 @@
 import React from 'react';
 import { useGame } from '../../contexts/GameContext';
 
+// Helper to convert various date formats to a Date object
+const toSafeDate = (timestamp) => {
+  if (!timestamp) return new Date(); // Return current date or handle as an error
+  if (timestamp.toDate) return timestamp.toDate(); // Firebase Timestamp
+  return new Date(timestamp); // ISO string or milliseconds
+};
+
 export default function CropDetailsModal({ crop, onClose }) {
   const { cropCatalog, harvestCrop } = useGame();
   
   if (!crop) return null;
   
-  const { type, stage, id, plantedAt, isHarvestable } = crop;
+  const { type, stage, plantedAt } = crop;
+  const isHarvestable = new Date() >= toSafeDate(crop.harvestTime);
+
   const cropInfo = cropCatalog[type];
   const progress = crop.growthProgress || 0;
   
@@ -14,7 +23,7 @@ export default function CropDetailsModal({ crop, onClose }) {
   const getTimeRemaining = () => {
     if (isHarvestable) return 'Ready to harvest!';
     
-    const harvestTime = crop.harvestTime.toDate().getTime();
+    const harvestTime = toSafeDate(crop.harvestTime).getTime();
     const currentTime = Date.now();
     const remainingMs = harvestTime - currentTime;
     
@@ -35,7 +44,7 @@ export default function CropDetailsModal({ crop, onClose }) {
   
   const handleHarvest = async () => {
     if (isHarvestable) {
-      await harvestCrop(id);
+      await harvestCrop(crop._id);
       onClose();
     }
   };
@@ -89,7 +98,7 @@ export default function CropDetailsModal({ crop, onClose }) {
             </div>
             <div>
               <p className="text-sm text-gray-600">Planted On</p>
-              <p className="font-medium">{plantedAt.toDate().toLocaleDateString()}</p>
+              <p className="font-medium">{toSafeDate(plantedAt).toLocaleDateString()}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Time Remaining</p>

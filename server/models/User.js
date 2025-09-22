@@ -23,6 +23,18 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 4,
   },
+  level: {
+    type: Number,
+    default: 1,
+  },
+  experience: {
+    type: Number,
+    default: 0,
+  },
+  panchayat: {
+    type: String,
+    default: null, // Or some default panchayat
+  },
 });
 
 module.exports = mongoose.model('User', UserSchema);

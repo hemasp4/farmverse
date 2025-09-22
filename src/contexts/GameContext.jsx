@@ -76,6 +76,25 @@ export function GameProvider({ children }) {
     fetchData();
   }, [currentUser]);
 
+  // Periodically refresh market prices for a real-time feel
+  useEffect(() => {
+    async function fetchMarketData() {
+      try {
+        const marketData = await getMarketPrices();
+        setMarketPrices(marketData.reduce((acc, item) => {
+          acc[item.cropName] = item.price;
+          return acc;
+        }, {}));
+      } catch (error) {
+        console.error("Error fetching market prices:", error);
+      }
+    }
+
+    const intervalId = setInterval(fetchMarketData, 15000); // Refresh every 15 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
   async function plantCrop(cropType, position) {
     try {
       const { crop: newCrop, user: updatedUser } = await plantCropService(cropType, position, cropCatalog);

@@ -14,6 +14,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const user = getCurrentUser();
     if (user) {
+      // Temporary: Add a default panchayat for testing
+      if (!user.panchayat) {
+        user.panchayat = 'Test Panchayat';
+      }
       setCurrentUser(user);
     }
     setLoading(false);

@@ -16,7 +16,7 @@ export default function Login() {
     try {
       setError('');
       setLoading(true);
-      await login(email, password);
+      await login(email.trim().toLowerCase(), password);
       navigate('/farm');
     } catch (error) {
       setError('Failed to sign in. Check your credentials.');

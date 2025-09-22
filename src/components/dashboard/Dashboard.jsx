@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../contexts/Authcontext';
 import { useGame } from '../../contexts/GameContext';
 import FarmStats from './FarmStats';
 import NotificationCenter from './NotificationCenter';
+import TransactionHistory from './TransactionHistory';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 
 export default function Dashboard() {
-  const { userData } = useAuth();
+  const { currentUser } = useAuth();
   const { crops, cropCatalog } = useGame();
+  const [showTransactionHistory, setShowTransactionHistory] = useState(false);
   
-  if (!userData) {
+  if (!currentUser) {
     return <div className="text-center py-8">Loading your farm data...</div>;
   }
   
@@ -45,10 +47,6 @@ export default function Dashboard() {
   
   const cropData = getCropDistribution();
   
-  // Calculate progress to next level (basic formula)
-  const expToNextLevel = userData.level * 100;
-  const levelProgress = (userData.experience / expToNextLevel) * 100;
-  
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -57,39 +55,27 @@ export default function Dashboard() {
           <h1 className="text-2xl font-bold mb-6">Welcome to your Farm!</h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {/* Farmer Level Card */}
+            {/* Farmer Profile Card */}
             <div className="card">
-              <h3 className="text-lg font-semibold mb-2">Farmer Level</h3>
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-farm-green rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                  {userData.level}
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>Progress to level {userData.level + 1}</span>
-                    <span>{Math.round(levelProgress)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div 
-                      className="bg-farm-green h-2.5 rounded-full" 
-                      style={{ width: `${levelProgress}%` }}
-                    ></div>
-                  </div>
-                </div>
+              <h3 className="text-lg font-semibold mb-2">Farmer Profile</h3>
+              <div className="space-y-2">
+                <p><strong>Username:</strong> {currentUser.username}</p>
+                <p><strong>Email:</strong> {currentUser.email}</p>
+                <p><strong>Land Size:</strong> {currentUser.land} plots</p>
               </div>
             </div>
             
             {/* Coins Card */}
-            <div className="card">
+            <div className="card cursor-pointer" onClick={() => setShowTransactionHistory(true)}>
             <h3 className="text-lg font-semibold mb-2">Farm Treasury</h3>
             <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-sunny-yellow rounded-full flex items-center justify-center text-2xl">
                 💰
                 </div>
                 <div>
-                <p className="text-3xl font-bold text-yellow-600">{userData.coins.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-yellow-600">{currentUser.coins.toLocaleString()}</p>
                 <p className="text-gray-600">Coins available</p>
-                <p className="text-xs text-gray-500 mt-1">Earn more by harvesting crops and selling them at the market!</p>
+                <p className="text-xs text-gray-500 mt-1">Click to view transaction history</p>
                 </div>
             </div>
             </div>
@@ -135,6 +121,9 @@ export default function Dashboard() {
           <NotificationCenter />
         </div>
       </div>
+      {showTransactionHistory && (
+        <TransactionHistory onClose={() => setShowTransactionHistory(false)} />
+      )}
     </div>
   );
 }

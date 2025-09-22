@@ -7,17 +7,18 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
+  const normalizedEmail = email.trim().toLowerCase();
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: normalizedEmail });
     if (user) {
-      console.log('Registration: User already exists for email:', email);
+      console.log('Registration: User already exists for email:', normalizedEmail);
       return res.status(400).json({ msg: 'User already exists' });
     }
 
     user = new User({
       username,
-      email,
+      email: normalizedEmail,
       password,
     });
 
@@ -42,7 +43,16 @@ router.post('/register', async (req, res) => {
       { expiresIn: 3600 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ 
+          token,
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            coins: user.coins,
+            land: user.land,
+          }
+        });
       }
     );
   } catch (err) {
@@ -54,10 +64,11 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email.trim().toLowerCase();
 
   try {
-    console.log('Login: Attempting to find user by email:', email);
-    let user = await User.findOne({ email });
+    console.log('Login: Attempting to find user by email:', normalizedEmail);
+    let user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       console.log('Login: User not found for email:', email);
       return res.status(400).json({ msg: 'Invalid credentials' });
@@ -69,13 +80,10 @@ router.post('/login', async (req, res) => {
       console.log('Login: Password mismatch for user:', user.email);
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
-    console.log('Login: Password matched for user:', user.email);
 
     const payload = {
       user: {
         id: user.id,
-        coins: user.coins,
-        land: user.land,
       },
     };
 
@@ -85,7 +93,16 @@ router.post('/login', async (req, res) => {
       { expiresIn: 3600 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ 
+          token,
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            coins: user.coins,
+            land: user.land,
+          }
+        });
       }
     );
   } catch (err) {

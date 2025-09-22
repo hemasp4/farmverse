@@ -31,10 +31,7 @@ const CropSchema = new mongoose.Schema({
     type: String,
     default: 'seedling',
   },
-  isHarvestable: {
-    type: Boolean,
-    default: false,
-  },
+
 });
 
 module.exports = mongoose.model('Crop', CropSchema);

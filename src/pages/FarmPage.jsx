@@ -116,7 +116,7 @@ export default function FarmPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {readyCrops.map(crop => (
                   <CropCard 
-                    key={crop.id} 
+                    key={crop._id} 
                     crop={crop} 
                     onSelect={handleCropSelect} 
                   />
@@ -148,7 +148,7 @@ export default function FarmPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {growingCrops.map(crop => (
                   <CropCard 
-                    key={crop.id} 
+                    key={crop._id} 
                     crop={crop} 
                     onSelect={handleCropSelect} 
                   />

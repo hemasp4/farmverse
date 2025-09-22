@@ -26,6 +26,10 @@ app.use('/api/crops', require('./routes/crop'));
 
 app.use('/api/notifications', require('./routes/notification'));
 
+app.use('/api/transactions', require('./routes/transaction'));
+
+app.use('/api/leaderboard', require('./routes/leaderboard'));
+
 app.get('/', (req, res) => {
   res.send('Farmverse server is running!');
 });

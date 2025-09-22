@@ -7,7 +7,7 @@ import { createNotification } from '../services/notificationService';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export default function DashboardPage() {
-  const { currentUser, userData, dailyReward, loading } = useAuth();
+  const { currentUser, dailyReward, loading } = useAuth();
   const { showCoinChange } = useGame();
   const [showWelcome, setShowWelcome] = useState(false);
   const [showDailyReward, setShowDailyReward] = useState(false);
@@ -21,7 +21,7 @@ export default function DashboardPage() {
       createNotification(
         currentUser.uid,
         'Daily Reward!',
-        `You've received ${dailyReward.coins} coins as your daily login reward.`,
+        `You\'ve received ${dailyReward.coins} coins as your daily login reward.`,
         'reward'
       );
     }
@@ -37,7 +37,7 @@ export default function DashboardPage() {
     return () => clearTimeout(timer);
   }, []);
   
-  if (loading && !userData) {
+  if (loading && !currentUser) {
     return (
       <MainLayout>
         <div className="flex justify-center items-center h-[70vh]">
@@ -58,12 +58,12 @@ export default function DashboardPage() {
             <p className="text-gray-600">Let's see how your crops are doing today.</p>
             
             {/* Show current coin amount */}
-            {userData && (
+            {currentUser && (
               <div className="pt-4 mt-4 border-t border-gray-100">
                 <p className="text-gray-700">Your current balance:</p>
                 <p className="flex items-center justify-center text-2xl font-bold text-yellow-600">
                   <span className="mr-2 text-yellow-500">💰</span>
-                  {userData.coins.toLocaleString()} coins
+                  {currentUser.coins.toLocaleString()} coins
                 </p>
               </div>
             )}
