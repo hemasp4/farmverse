@@ -19,7 +19,10 @@ export default function FarmGrid() {
   const [selectedCropForDetails, setSelectedCropForDetails] = useState(null);
 
   // Calculate grid size based on user's land
-  const gridSize = currentUser ? Math.sqrt(currentUser.land) : 2;
+  let gridSize = currentUser ? Math.floor(Math.sqrt(currentUser.land)) : 2;
+  if (isNaN(gridSize) || gridSize <= 0) {
+    gridSize = 2;
+  }
   
   // Create a 2D array representing the farm grid
   const createGrid = () => {

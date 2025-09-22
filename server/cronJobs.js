@@ -3,6 +3,7 @@ const Market = require('./models/Market');
 const User = require('./models/User');
 const Notification = require('./models/Notification');
 const Crop = require('./models/Crop');
+const Transaction = require('./models/Transaction');
 
 // Update market prices (runs every 6 hours)
 cron.schedule('0 */6 * * *', async () => {
@@ -45,6 +46,17 @@ cron.schedule('0 0 * * *', async () => {
     for (const user of users) {
       user.coins += rewardAmount;
       await user.save();
+
+      const newTransaction = new Transaction({
+        user: user._id,
+        cropType: 'daily-reward',
+        quantity: 1,
+        pricePerUnit: rewardAmount,
+        totalEarnings: rewardAmount,
+        type: 'reward',
+        source: 'System',
+      });
+      await newTransaction.save();
 
       const newNotification = new Notification({
         user: user._id,

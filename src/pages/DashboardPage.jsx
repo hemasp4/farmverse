@@ -63,7 +63,7 @@ export default function DashboardPage() {
                 <p className="text-gray-700">Your current balance:</p>
                 <p className="flex items-center justify-center text-2xl font-bold text-yellow-600">
                   <span className="mr-2 text-yellow-500">💰</span>
-                  {currentUser.coins.toLocaleString()} coins
+                  {typeof currentUser.coins === 'number' ? currentUser.coins.toLocaleString() : '0'} coins
                 </p>
               </div>
             )}

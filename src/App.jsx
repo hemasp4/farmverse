@@ -17,13 +17,16 @@ const FarmPage = lazy(() => import('./pages/FarmPage'));
 const MarketPage = lazy(() => import('./pages/MarketPage'));
 const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
+const FarmingLearnPage = lazy(() => import('./pages/FarmingLearnPage'));
+const InitialRouteHandler = lazy(() => import('./components/auth/InitialRouteHandler'));
 
 function AppContent() {
   return (
     <>
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<InitialRouteHandler />} />
+          <Route path="/welcome" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route 
@@ -58,15 +61,22 @@ function AppContent() {
               </PrivateRoute>
             } 
           />
-          <Route 
-            path="/news" 
-            element={
-              <PrivateRoute>
-                <NewsPage />
-              </PrivateRoute>
-            } 
-          />
-        </Routes>
+                      <Route 
+                      path="/news" 
+                      element={
+                        <PrivateRoute>
+                          <NewsPage />
+                        </PrivateRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/learn" 
+                      element={
+                        <PrivateRoute>
+                          <FarmingLearnPage />
+                        </PrivateRoute>
+                      } 
+                    />        </Routes>
       </Suspense>
       
       <NetworkStatus />

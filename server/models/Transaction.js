@@ -25,6 +25,9 @@ const TransactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  source: {
+    type: String,
+  },
   timestamp: {
     type: Date,
     default: Date.now,

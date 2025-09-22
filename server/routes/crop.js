@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const Crop = require('../models/Crop');
 const User = require('../models/User');
+const Transaction = require('../models/Transaction');
 
 // @route   POST api/crops
 // @desc    Plant a new crop
@@ -28,8 +29,18 @@ router.post('/', auth, async (req, res) => {
     // 4. Deduct coins
     user.coins -= cropCost;
 
-    // 5. Save user
     await user.save();
+
+    const newTransaction = new Transaction({
+      user: req.user.id,
+      cropType: cropType,
+      quantity: 1,
+      pricePerUnit: -cropCost,
+      totalEarnings: -cropCost,
+      type: 'plant',
+      source: 'Farm',
+    });
+    await newTransaction.save();
 
     const plantedAt = new Date();
     const growthTime = cropCatalog[cropType].growthTime;

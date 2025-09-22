@@ -39,6 +39,7 @@ router.post('/sell', auth, async (req, res) => {
       pricePerUnit: price,
       totalEarnings,
       type: 'sell',
+      source: 'Market',
     });
 
     const transaction = await newTransaction.save();

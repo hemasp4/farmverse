@@ -73,7 +73,9 @@ export default function Dashboard() {
                 💰
                 </div>
                 <div>
-                <p className="text-3xl font-bold text-yellow-600">{currentUser.coins.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-yellow-600">
+                  {typeof currentUser.coins === 'number' ? currentUser.coins.toLocaleString() : '0'}
+                </p>
                 <p className="text-gray-600">Coins available</p>
                 <p className="text-xs text-gray-500 mt-1">Click to view transaction history</p>
                 </div>

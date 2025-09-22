@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: 'Market', path: '/market', icon: '🛒' },
     { name: 'Leaderboard', path: '/leaderboard', icon: '🏆' },
     { name: 'News', path: '/news', icon: '📰' },
+    { name: 'Learn', path: '/learn', icon: '🎓' },
   ];
   
   const isActive = (path) => {
